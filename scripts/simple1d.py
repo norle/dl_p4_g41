@@ -41,8 +41,8 @@ LOAD_MODEL_FNAME = None
 #LOAD_MODEL_FNAME = f"model_{MODEL.__name__}_colorful-wave-84"
 
 # CONSTANTS TO LEAVE
-DATA_ROOT = Path(f"/dtu-compute/02456-p4-e24/data") 
 ROOT = Path(__file__).parent.parent
+DATA_ROOT = ROOT / "data"
 MODEL_DIR = ROOT / "models"
 STMF_FILENAME = "stmf_data_3.csv"
 NFFT = 512
@@ -78,7 +78,7 @@ class SimpleNN(torch.nn.Module):
         return out
 
 def transform_input(data):
-    input_data = data[:, 4, :, :]  # Use only the 5th channel
+    input_data = data[:, 5, :, :]  # Use only the 6th channel
     input_data = input_data - 0.5
     projected = input_data.sum(dim=2)  # Average over Y axis
     std_dev = projected.std(dim=1, keepdim=True)  # Calculate std deviation for each input
@@ -122,7 +122,7 @@ def test_model(model, X_val, y_val):
 
 if __name__ == "__main__":
     print(f"Using {DEVICE} device")
-    state = None
+    state = 'train'
     # DATA SET SETUP
     dataset_name = make_dataset_name(nfft=NFFT, ts_crop_width=TS_CROPTWIDTH, vr_crop_width=VR_CROPTWIDTH)
     data_dir = DATA_ROOT / dataset_name
@@ -178,11 +178,11 @@ if __name__ == "__main__":
     if state == 'train':
         # Save transformed train inputs to CSV
         train_inputs_df = pd.DataFrame(spectrogram_train)
-        train_inputs_df.to_csv('figures/train_lr_nn.csv', index=False)
+        #train_inputs_df.to_csv('figures/train_lr_nn.csv', index=False)
 
         input_size = spectrogram_train.shape[1]
         print(input_size)
-        hidden_size = 100
+        hidden_size = 50
         output_size = 1
 
         model = SimpleNN(input_size, hidden_size, output_size).to(DEVICE)
@@ -225,6 +225,7 @@ if __name__ == "__main__":
         plt.savefig('figures/error_dist_nn.png')
         plt.close()
     else:
+        # Test a model
         # Load the model
         model_path = 'models/simple_nn_model_4_ch_3_65.pth'
         model = SimpleNN(74, 50, 1).to(DEVICE)
