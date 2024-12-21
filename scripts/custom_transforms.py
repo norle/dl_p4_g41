@@ -44,5 +44,5 @@ class ToTensor(object):
         # swap channel axis because
         # numpy image: H x W x C
         # torch image: C x H x W
-        spectrogram = spectrogram.transpose((2, 0, 1))
+        # spectrogram = spectrogram.transpose((2, 0, 1))
         return torch.from_numpy(spectrogram.astype(np.float32))
