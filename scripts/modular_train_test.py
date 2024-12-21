@@ -8,13 +8,13 @@ import wandb
 
 from custom_transforms import LoadSpectrogram, NormalizeSpectrogram, ToTensor, InterpolateSpectrogram
 from data_management import make_dataset_name
-from models import weights_init_uniform_rule, SpectrVelCNNRegr, TwoChannel
+from models import weights_init_uniform_rule, SpectrVelCNNRegr
 
 # GROUP NUMBER
 GROUP_NUMBER = 41
 
 # CONSTANTS TO MODIFY AS YOU WISH
-MODEL = TwoChannel
+MODEL = SpectrVelCNNRegr
 LEARNING_RATE = 10**-4
 WEIGHT_DECAY = 1e-4
 EPOCHS = 350 # the model converges in test perfermance after ~250-300 epochs
@@ -54,7 +54,7 @@ def train_one_epoch(loss_fn, model, train_data_loader):
 
     for i, data in enumerate(train_data_loader):
 
-        spectrogram, target = data["spectrogram"][:, 4:, :, :].to(DEVICE), data["target"].to(DEVICE) # Use only the 5th channel, keep channel dimension
+        spectrogram, target = data["spectrogram"].to(DEVICE), data["target"].to(DEVICE) # Use only the 5th channel, keep channel dimension
         # Add some noise to the spectro for data augmentation
         #spectrogram = spectrogram + torch.randn_like(spectrogram) * 0.1
         # # Shift the spectrogram horizontally
@@ -185,7 +185,7 @@ if __name__ == "__main__":
         with torch.no_grad():
             for i, vdata in enumerate(test_data_loader):
                 # Get data and targets
-                spectrogram, target = vdata["spectrogram"][:, 4:, :, :].to(DEVICE), vdata["target"].to(DEVICE)  # Use only the 5th channel, keep channel dimension
+                spectrogram, target = vdata["spectrogram"].to(DEVICE), vdata["target"].to(DEVICE)  # Use only the 5th channel, keep channel dimension
                 
                 # Get model outputs
                 test_outputs = model(spectrogram)
