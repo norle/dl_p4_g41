@@ -79,7 +79,7 @@ if __name__ == "__main__":
     # Example usage
     DATA_ROOT = Path(f"/dtu-compute/02456-p4-e24/data") 
     STMF_FILENAME = "stmf_data_3.csv"
-
+    print("saliency")
     NFFT = 512
     TS_CROPTWIDTH = (-150, 200)
     VR_CROPTWIDTH = (-60, 15)
