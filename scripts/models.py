@@ -83,26 +83,27 @@ class SpectrVelCNNRegr(nn.Module):
 
 
 
-class ResNet(nn.Module):
-    """ResNet model for regression to the velocity"""
+# class ResNet(nn.Module):
+#     """ResNet model for regression to the velocity"""
 
-    loss_fn = mse_loss
-    dataset = SpectrogramDataset
+#     loss_fn = mse_loss
+#     dataset = SpectrogramDataset
 
-    def __init__(self):
-        super().__init__()
-        self.resnet = models.resnet18(pretrained=True)
-        self.resnet.conv1 = nn.Conv2d(6, 64, kernel_size=7, stride=2, padding=3, bias=False)
-        self.resnet.fc = nn.Sequential(
-            nn.Linear(self.resnet.fc.in_features, 512),
-            nn.ReLU(),
-            nn.Dropout(p=0.02),
-            nn.Linear(512, 1)
-        )
+#     def __init__(self):
+#         super().__init__()
+#         print(2)
+#         self.resnet = models.resnet18(weights='ResNet18_Weights.DEFAULT')
+#         self.resnet.conv1 = nn.Conv2d(6, 64, kernel_size=7, stride=2, padding=3, bias=False)
+#         self.resnet.fc = nn.Sequential(
+#             nn.Linear(self.resnet.fc.in_features, 512),
+#             nn.ReLU(),
+#             nn.Dropout(p=0.02),
+#             nn.Linear(512, 1)
+#         )
 
-    def forward(self, input_data):
+#     def forward(self, input_data):
 
-        return self.resnet(input_data)
+#         return self.resnet(input_data)
     
 
 # Baseline with stride=2 at the 3rd and 4th layer instead of 1 and removed a linear layer
@@ -1181,9 +1182,9 @@ class ResNet(nn.Module):
     loss_fn = mse_loss
     dataset = SpectrogramDataset
 
-    def __init__(self, dropout_rate=0.1):
+    def __init__(self, dropout_rate=0.02):
         super().__init__()
-        self.resnet = models.resnet18(pretrained=True)
+        self.resnet = models.resnet18(weights='ResNet18_Weights.DEFAULT')
         self.resnet.conv1 = nn.Conv2d(6, 64, kernel_size=7, stride=2, padding=3, bias=False)
         self.resnet.fc = nn.Sequential(
             nn.Linear(self.resnet.fc.in_features, 512),
