@@ -96,7 +96,7 @@ class ResNet(nn.Module):
         self.resnet.fc = nn.Sequential(
             nn.Linear(self.resnet.fc.in_features, 512),
             nn.ReLU(),
-            nn.Dropout(p=0.3),
+            nn.Dropout(p=0.02),
             nn.Linear(512, 1)
         )
 
