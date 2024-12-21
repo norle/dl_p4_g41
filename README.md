@@ -4,7 +4,7 @@ This repository contains code that was used to create our report.
 
 ## The data in the repository isn't the data used for the report
 
-Because the data used is under and NDA, we provide hand made data that tries to somewhat immitate the actual data. This is done for demonstrating the used code.
+Because the data used is under an NDA, we provide hand made data that tries to somewhat immitate the actual data. This is done for demonstrating the used code.
 
 ## Script files
 
